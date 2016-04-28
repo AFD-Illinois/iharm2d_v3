@@ -128,7 +128,7 @@ int restart_init()
 			/* need to figure out which dump is which */
 
 			fprintf(stderr,
-				"Use dumps/rdumpA (0) or dumps/rdumpB (1)?   [A|B]  \n");
+				"Use dumps/rdumpA (A) or dumps/rdumpB (B)?   [A|B]  \n");
 			fscanf(stdin, "%s", ans);
 			if (strncmp(ans, "A", 1) == 0) {
 				fp = fpA;

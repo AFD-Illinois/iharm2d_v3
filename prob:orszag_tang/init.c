@@ -3,6 +3,9 @@
 
 initial conditions for relativistic orszag-tang vortex.
 
+description follows initial conditions for the athena
+	test problem
+
 */
 
 #include "decs.h"
@@ -13,14 +16,14 @@ void init()
 	double X[NDIM];
 
 	/* physical parameters */
-	gam = 4./3.;
+	gam = 5./3.;
 
 	/* set up grid functions */
 	set_geometry();
 
 	/* end of simulation.  time unit = G M/c^3 */
 	t = 0.;
-	tf = 4.0*M_PI ;
+	tf = 2.;
 	dtsave = dt = 1.e-4;
 	cour = 0.9;
 
@@ -40,15 +43,20 @@ void init()
 	ZLOOP {
 		coord(i, j, CENT, X);
 
-                p[i][j][U1] = -sin(X[2] + M_PI);
-                p[i][j][U2] = sin(X[1] + M_PI);
-                p[i][j][U3] = 0. ;
-                p[i][j][B1] = -sin(X[2] + M_PI) ;
-                p[i][j][B2] = sin(2.*(X[1] + M_PI)) ;
+		double v1 = -0.5*sin(2.*M_PI*X[2]);
+                double v2 =  0.5*sin(2.*M_PI*X[1]);
+                double lorentzFactor = 1./sqrt(1. - v1*v1 - v2*v2);
+
+                p[i][j][U1] = lorentzFactor*v1;
+                p[i][j][U2] = lorentzFactor*v2;
+                p[i][j][U3] = 0.;
+
+                p[i][j][B1] = -1./sqrt(4.*M_PI) * sin(2.*M_PI*X[2]);
+                p[i][j][B2] =  1./sqrt(4.*M_PI) * sin(4.*M_PI*X[1]);
                 p[i][j][B3] = 0. ;
 
-                p[i][j][RHO] = 25./9. ;
-                p[i][j][UU] = (5./3.)/(gam - 1.) ;
+                p[i][j][RHO] = 25./(36.*M_PI);
+                p[i][j][UU] = 5./(12.*M_PI*(gam - 1.));
 	}
 
 	/* enforce boundary conditions */

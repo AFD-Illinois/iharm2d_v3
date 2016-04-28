@@ -29,8 +29,8 @@
 /** END SWITCHES **/
 
 /** dimensions of problem **/
-#define N1       (400)		/* number of physical zones in X1-direction */
-#define N2       (400)		/* number of physical zones in X2-direction */
+#define N1       (512)		/* number of physical zones in X1-direction */
+#define N2       (512)		/* number of physical zones in X2-direction */
 #define NMAX     (N1 > N2 ? N1 : N2) /* this sizes 1D slices */
 
 #define NPR        (8) 		/* number of primitive variables */

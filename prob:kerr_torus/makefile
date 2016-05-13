@@ -2,7 +2,7 @@
 #
 CORE_SRC_DIR = ../core_src
 #
-CC      = gcc5
+CC      = gcc
 CFLAGS  = -Wall -Ofast -fopenmp -I./
 LDFLAGS = -lm -lgsl -lgslcblas
 EXE     = harm

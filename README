@@ -19,6 +19,8 @@ display images/im_logrho_1000.ppm
 make rz_image
 # then make a set of movies - requires ffmpeg
 sh ./make_movie.sh
+# have a look:
+vlc images/logrho_rz.mov
 # then look at contour plot of log(density) in dump040
 ./dump.py 40
 #

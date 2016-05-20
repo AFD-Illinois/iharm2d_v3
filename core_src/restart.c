@@ -161,7 +161,7 @@ int restart_init()
       e.g., cour = 0.4 , tf ...
   ************************************************************************/
 	//cour = 0.9 ;
-	//tf = 4000. ;
+	tf = 4.*M_PI;
 
 	fprintf(stderr, "done with restart init.\n");
 

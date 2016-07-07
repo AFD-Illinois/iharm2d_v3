@@ -25,7 +25,7 @@ $(OBJS) : $(INCS) $(SRCS) makefile
 
 # makes exec for mapping x1x2 images -> rz coordinates
 rz_image: ../analysis/rz_image.c makefile
-	$(CC) $(CFLAGS) ../analysis/rz_image.c -o rz_image
+	$(CC) $(CFLAGS) $(LDFLAGS) ../analysis/rz_image.c -o rz_image
 
 all: $(EXE) rz_image
 

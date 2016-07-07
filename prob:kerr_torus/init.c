@@ -55,12 +55,12 @@ void init()
 	t = 0.;
 	tf = 2000.0;
 	dtsave = dt = 1.e-8;
-	cour = 0.4;
+	cour = 0.8;
 
 	/* output frequencies */
 	DTd = 50.;		/* dumping frequency, in units of M */
-	DTl = 2.0;		/* logfile frequency, in units of M */
-	DTi = 2.0;		/* image file frequ., in units of M */
+	DTl = 5.0;		/* logfile frequency, in units of M */
+	DTi = 5.0;		/* image file frequ., in units of M */
 	DTr = 512;		/* restart file frequ., in timesteps */
 
 	/* start diagnostic counters */

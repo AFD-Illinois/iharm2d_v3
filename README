@@ -7,23 +7,50 @@ prob:* : problem-specific source code.
 Typical workflow:
 
 ## make and run
+#
 cd prob:kerr_torus
+#
 make newrun 
+#
 # run, leaving some diagnostic info in harm.out
 ./harm >& harm.out
+# ... this takes about 45 min on a mid-2015 macbook pro.
+# for a longer run, edit decs.h and change N1 -> 256, N2 -> 256
+#
 #
 ## analyze
+#
 # look at log(density) in x1-x2 coordinates - requires imagemagick
-display images/im_logrho_1000.ppm
+display images/im_logrho_0400.ppm
+#
 # make a useful imaging program
 make rz_image
+#
 # then make a set of movies - requires ffmpeg
 sh ./make_movie.sh
+#
 # have a look:
 vlc images/logrho_rz.mov
 # then look at contour plot of log(density) in dump040
 ./dump.py 40
 #
+#
 ## repeat, wiping out data from last run.
+#
 make newrun
+#
+## another test case
+#
+cd ../prob:explosion
+#
+make
+#
+./harm >&! harm.out
+# ... this takes about 7 min.
+# etc...
+#
+# thanks to Peter Teuben and students at the Les Houches
+# school of computational astrophysics in May 2016 for 
+# finding bugs and suggesting improvements.
+#
 

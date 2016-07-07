@@ -38,6 +38,9 @@ void dump(FILE * fp)
 	fprintf(fp, FMT_INT_OUT, rdump_cnt);
 	fprintf(fp, FMT_DBL_OUT, dt);
 
+	/* dummy values to make all lines have same # columns */
+	for(i=0;i<21;i++) fprintf(fp, FMT_DBL_OUT, 0.);
+
 	fprintf(fp, "\n");
 
 	/* calculate charge density */

@@ -30,7 +30,7 @@ void wind_source(double *prim, struct of_geom *geom, struct of_state *q,
 	/* here is the rate at which we're adding particles */
 	/* this function is designed to concentrate effect in the
 	   funnel in black hole evolutions */
-        drhopdt = 1.e-3*cth*cth*cth*cth/pow(1. + r*r,2) ;  
+        drhopdt = 2.e-4*cth*cth*cth*cth/pow(1. + r*r,2) ;  
 
         dp[RHO] = drhopdt ;
 

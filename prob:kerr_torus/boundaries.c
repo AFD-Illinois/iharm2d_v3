@@ -14,7 +14,7 @@ void bound_prim(double prim[][N2 + 2*NG][NPR])
 			PLOOP prim[i][j][k] = prim[iz][j][k];
 			pflag[i][j] = pflag[iz][j];
 
-			rescale_fac = ggeom[i][j][CENT].g/ggeom[iz][j][CENT].g ;
+			rescale_fac = ggeom[iz][j][CENT].g/ggeom[i][j][CENT].g ;
 			prim[i][j][B1] *= rescale_fac ;
 			prim[i][j][B2] *= rescale_fac ;
 			prim[i][j][B3] *= rescale_fac ;
@@ -28,7 +28,7 @@ void bound_prim(double prim[][N2 + 2*NG][NPR])
 			PLOOP prim[i][j][k] = prim[iz][j][k];
 			pflag[i][j] = pflag[iz][j];
 
-			rescale_fac = ggeom[i][j][CENT].g/ggeom[iz][j][CENT].g ;
+			rescale_fac = ggeom[iz][j][CENT].g/ggeom[i][j][CENT].g ;
 			prim[i][j][B1] *= rescale_fac ;
 			prim[i][j][B2] *= rescale_fac ;
 			prim[i][j][B3] *= rescale_fac ;

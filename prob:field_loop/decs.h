@@ -24,7 +24,7 @@
 	reconstruct_lr_weno - weno5
 	reconstruct_lr_mp5  - mp5
 */
-#define RECONSTRUCT_LR reconstruct_lr_par
+#define RECONSTRUCT_LR reconstruct_lr_weno
 
 /** END SWITCHES **/
 

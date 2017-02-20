@@ -1,10 +1,12 @@
 
 /*
 
-initial conditions for relativistic orszag-tang vortex.
+smooth field loop advection test problem
 
 description follows initial conditions for the athena
 	test problem
+
+alternative description uses smooth current configuration.
 
 */
 
@@ -40,7 +42,7 @@ void init()
 	image_cnt = 0;
 	rdump_cnt = 0;
 
-	/* field loop advection problem */
+	/* field loop */
 	double A[N1+2*NG][N2+2*NG];
 	double r;
 	for(i=0;i<N1+2*NG;i++)
@@ -51,8 +53,14 @@ void init()
 		coord(i, j, CORN, X);
 
 		r = sqrt(X[1]*X[1] + X[2]*X[2]);
-		A[i][j] = eps*1.e-3*exp(-r*r/(2.*0.2*0.2));   /* smooth field distribution */
-		A[i][j] = eps*1.e-4*fmax(0.3-r, 0.);          /* field loop with sharp edge */
+
+		/* original gardner & stone version */
+		/* current is discontinuous */
+		A[i][j] = eps*1.e-4*fmax(0.3-r, 0.);
+
+		/* smooth field loop */
+		/* current is continuous */
+		A[i][j] = eps*1.e-3*exp(-r*r/(2.*0.2*0.2));
 
 		fprintf(stderr,"%d %d %g %g\n",i,j,r,A[i][j]) ;
 

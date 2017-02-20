@@ -37,12 +37,12 @@ void gcov_func(double *X, double gcov[][NDIM])
 void set_coordinates()
 {
 
-	startx[1] = -M_PI ;
-	startx[2] = -M_PI ;
+	startx[1] = 0. ;
+	startx[2] = 0. ;
 	startx[3] = 0.;
 
-	dx[1] = 2.*M_PI / N1;
-	dx[2] = 2.*M_PI / N2;
+	dx[1] = 2. / N1;
+	dx[2] = 1. / N2;
 	dx[3] = 1.;	/* used to evaluate integrals */
 
 }

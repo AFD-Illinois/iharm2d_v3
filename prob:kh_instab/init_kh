@@ -21,19 +21,15 @@ void init()
 	/* set up grid functions */
 	set_geometry();
 
-	/* problem is relativistic at tscale = 1; 
-		nonrelativistic for tscale << 1. */
-	double tscale = 0.1;
-
 	/* end of simulation.  time unit = G M/c^3 */
 	t = 0.;
-	tf = 1.5*M_PI/tscale;
+	tf = 20.0;
 	dtsave = dt = 1.e-4;
-	cour = 0.9;
+	cour = 0.95;
 
 	/* output frequencies */
 	DTd = tf/10.;		/* dumping frequency, in units of M */
-	DTl = tf/200.;		/* logfile frequency, in units of M */
+	DTl = tf/100.;		/* logfile frequency, in units of M */
 	DTi = tf/200.;		/* image file frequ., in units of M */
 	DTr = 512;		/* restart file frequ., in timesteps */
 
@@ -43,28 +39,31 @@ void init()
 	image_cnt = 0;
 	rdump_cnt = 0;
 
-	/* relativistic Orszag-Tang vortex */
+	/* jet problem */
+	double f; /* profile function */
+	double h = 0.01 ;
+	double d = 1.e-3;
+	init_rng(1);
 	ZLOOP {
 		coord(i, j, CENT, X);
 
-                p[i][j][U1] = -sin(X[2] + M_PI);
-                p[i][j][U2] =  sin(X[1] + M_PI) ;
+		/* a periodic function that approaches a square
+		   wave as h -> 0.
+		   MAX(df/dx) = 1/h */
+		f = tanh((1./(2.*M_PI*h)) * sin(2.*M_PI*X[1])) ;
+
+                p[i][j][U1] = 0.;
+		p[i][j][U1] += d*(ran_uniform()-0.5);
+                p[i][j][U2] = 0.1*f ;  
+		p[i][j][U2] += d*(ran_uniform()-0.5);
                 p[i][j][U3] = 0.;
 
-                p[i][j][B1] = -sin(X[2] + M_PI);
-                p[i][j][B2] =  sin(2.*(X[1] + M_PI));
+                p[i][j][B1] = 0. ;
+                p[i][j][B2] = 0. ;
                 p[i][j][B3] = 0. ;
 
-                p[i][j][RHO] = 25./9.;
-                p[i][j][UU] = 5./(3.*(gam - 1.));
-
-                p[i][j][U1] *= tscale ;
-                p[i][j][U2] *= tscale ;
-                p[i][j][U3] *= tscale ;
-                p[i][j][B1] *= tscale ;
-                p[i][j][B2] *= tscale ;
-                p[i][j][B3] *= tscale ;
-                p[i][j][UU] *= tscale*tscale ;
+                p[i][j][RHO] = 1. - 0.01*f;
+                p[i][j][UU] = 0.5/(gam - 1.);
 	}
 
 	/* enforce boundary conditions */

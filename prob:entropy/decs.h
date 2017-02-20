@@ -24,13 +24,13 @@
 	reconstruct_lr_weno - weno5
 	reconstruct_lr_mp5  - mp5
 */
-#define RECONSTRUCT_LR reconstruct_lr_par
+#define RECONSTRUCT_LR reconstruct_lr_weno
 
 /** END SWITCHES **/
 
 /** dimensions of problem **/
-#define N1       (256)		/* number of physical zones in X1-direction */
-#define N2       (256)		/* number of physical zones in X2-direction */
+#define N1       (1024)		/* number of physical zones in X1-direction */
+#define N2       (2)		/* number of physical zones in X2-direction */
 #define NMAX     (N1 > N2 ? N1 : N2) /* this sizes 1D slices */
 
 #define NPR        (8) 		/* number of primitive variables */

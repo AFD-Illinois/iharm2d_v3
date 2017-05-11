@@ -16,14 +16,14 @@ void init()
 	double X[NDIM];
 
 	/* physical parameters */
-	gam = 4./3.;
+	gam = 5./3.;
 
 	/* set up grid functions */
 	set_geometry();
 
 	/* problem is relativistic at tscale = 1; 
 		nonrelativistic for tscale << 1. */
-	double tscale = 0.1;
+	double tscale = 0.05;
 
 	/* end of simulation.  time unit = G M/c^3 */
 	t = 0.;

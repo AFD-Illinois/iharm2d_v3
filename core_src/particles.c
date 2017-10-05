@@ -24,7 +24,7 @@ void advance_particles(double ph[][N2 + 2*NG][NPR], double Dt)
 
 		/* don't update particles that are off-grid */
 		if(xp[l][1] > startx[1] && xp[l][2] > startx[2] &&
-		   xp[l][1] < stopx[2]  && xp[l][2] < stopx[2]) {
+		   xp[l][1] < stopx[1]  && xp[l][2] < stopx[2]) {
 
 			/* the four-velocities are zone-centered */
 			f1 = (xp[l][1] - startx[1] + 0.5*dx[1]) / dx[1];

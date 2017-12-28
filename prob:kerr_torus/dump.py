@@ -135,7 +135,7 @@ plt.rc('font', family='sans-serif')
 # plot the variable
 # reshape the array for input to contour
 plotted_variable = lrho
-pvar = np.reshape(plotted_variable, (n2, n1)) 
+pvar = np.reshape(plotted_variable, (n1, n2)) 
 pvar = np.transpose(pvar)
 # make axes
 x1var = np.linspace(startx1, startx1 + n1*dx1, num=n1)
@@ -143,7 +143,12 @@ x2var = np.linspace(startx2, startx1 + n2*dx2, num=n2)
 # prevent dashed negative contours
 plt.rcParams['contour.negative_linestyle'] = 'solid'
 print len(x1var), len(x2var)
+print pvar.shape
+# contour plot,
 plt.contour(x1var, x2var, pvar, 20, colors = 'k')
+# or, color plot
+#plt.pcolor(x1var, x2var, pvar)
+#plt.colorbar()
 # labels
 plt.xlabel('$x_1$', weight='bold', fontsize=20)
 plt.ylabel('$x_2$', weight='bold', fontsize=20)

@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
 
 	/* final speed report */
 	tf_t = time(NULL) ;
-	zcps = nstep*N1*N2/((double)(tf_t-ti_t)) ;
+	zcps = nstep*(double)N1*(double)N2/((double)(tf_t-ti_t)) ;
 	fprintf(stderr,"Run average zone cycles/second: %g\n", zcps) ;
 
 	/* emit final diagnostics */

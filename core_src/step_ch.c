@@ -159,7 +159,7 @@ double fluxcalc(double pr[][N2 + 2*NG][NPR], double F[][N2 + 2*NG][NPR], int dir
 	int i, j, k ;
 	double p_l[NMAX+2*NG][NPR], p_r[NMAX+2*NG][NPR] ;
 	double ndt,dtij;
-	double cmax[N1+2*NG][N2+2*NG] ;
+	static double cmax[N1+2*NG][N2+2*NG] ;
 	double ptmp[NMAX+2*NG][NPR] ;
 
 	ndt = 1.e3 ;

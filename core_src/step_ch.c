@@ -293,8 +293,8 @@ void diag_flux(double F1[][N2 + 2*NG][NPR], double F2[][N2 + 2*NG][NPR])
 		for(k=0;k<NPR;k++) sum_boundary_flux[3][k] += F1[0+START1+N1][j][k] * dx[2] * dx[3];
         }
         for (i = START1; i < N1+START1; i++) {
-		for(k=0;k<NPR;k++) sum_boundary_flux[4][k] += F2[0+START2][i][k]    * dx[1] * dx[3];
-		for(k=0;k<NPR;k++) sum_boundary_flux[5][k] += F2[0+START2+N2][i][k] * dx[1] * dx[3];
+		for(k=0;k<NPR;k++) sum_boundary_flux[4][k] += F2[i][0+START2][k]    * dx[1] * dx[3];
+		for(k=0;k<NPR;k++) sum_boundary_flux[5][k] += F2[i][0+START2+N2][k] * dx[1] * dx[3];
 	}
 }
 

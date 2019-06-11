@@ -3,8 +3,8 @@
 CORE_SRC_DIR = ../core_src
 #
 CC      = gcc
-% this may be useful for large N1,N2:
-% CFLAGS  = -mcmodel=large -Wall -Ofast -fopenmp -I./
+# this may be useful for large N1,N2:
+#CFLAGS  = -mcmodel=large -Wall -Ofast -fopenmp -I./
 CFLAGS  = -Wall -Ofast -fopenmp -I./
 LDFLAGS = -lm -lgsl -lgslcblas
 EXE     = harm

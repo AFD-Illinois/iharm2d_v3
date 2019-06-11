@@ -25,7 +25,7 @@ void init()
 		nonrelativistic for tscale << 1. */
 	double tscale = 0.05;
 
-	/* end of simulation.  time unit = G M/c^3 */
+	/* end of simulation */
 	t = 0.;
 	tf = 1.5*M_PI/tscale;
 	dtsave = dt = 1.e-4;

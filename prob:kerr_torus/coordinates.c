@@ -148,7 +148,7 @@ void find_model_limits(int i, int j, double *rhoflr, double *uuflr)
         /* this is a "natural" scaling for inflow problems */
         rhoscal = pow(r, -1.5);
 
-		/* this is new iharm3d-like floor */
+	/* this is new iharm3d-like floor */
         rhoscal = pow(r, -2.) / (1. + r/FLOOR_R_CHAR);
 
         uuscal = rhoscal/r ;

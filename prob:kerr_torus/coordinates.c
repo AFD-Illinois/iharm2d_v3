@@ -132,8 +132,10 @@ void BL_coord(double *X, double *r, double *th)
 
 #define RHOMINLIMIT (1.e-20)
 #define UUMINLIMIT  (1.e-20)
-#define RHOMIN  (1.e-5)
-#define UUMIN   (1.e-7)
+#define RHOMIN  (1.e-6)
+#define UUMIN   (1.e-8)
+
+#define FLOOR_R_CHAR (10.)
 
 void find_model_limits(int i, int j, double *rhoflr, double *uuflr)
 {
@@ -145,11 +147,16 @@ void find_model_limits(int i, int j, double *rhoflr, double *uuflr)
 
         /* this is a "natural" scaling for inflow problems */
         rhoscal = pow(r, -1.5);
+
+		/* this is new iharm3d-like floor */
+        rhoscal = pow(r, -2.) / (1. + r/FLOOR_R_CHAR);
+
         uuscal = rhoscal/r ;
 
         /* set floors */
         *rhoflr = RHOMIN * rhoscal;
         *uuflr = UUMIN * uuscal;
+
         if (*rhoflr < RHOMINLIMIT) *rhoflr = RHOMINLIMIT;
         if (*uuflr < UUMINLIMIT) *uuflr = UUMINLIMIT;
         /* end set floors */

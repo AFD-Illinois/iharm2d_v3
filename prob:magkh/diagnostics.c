@@ -130,7 +130,7 @@ void diag_pdump()
 void diag_image()
 {
 	int i,j,k;
-	double dimage[N1*N2];
+	static double dimage[N1*N2];
 
 	/** for each type of image file, 
 		- assign floating point values to image array dimage

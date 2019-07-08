@@ -139,7 +139,7 @@ pvar = np.reshape(plotted_variable, (n1, n2))
 pvar = np.transpose(pvar)
 # make axes
 x1var = np.linspace(startx1, startx1 + n1*dx1, num=n1)
-x2var = np.linspace(startx2, startx1 + n2*dx2, num=n2)
+x2var = np.linspace(startx2, startx2 + n2*dx2, num=n2)
 # prevent dashed negative contours
 plt.rcParams['contour.negative_linestyle'] = 'solid'
 print len(x1var), len(x2var)

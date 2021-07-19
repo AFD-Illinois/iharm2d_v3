@@ -1,20 +1,21 @@
-
 /*
 
 	contains coordinate-independent, geometrical evaluations
 
 	problem-independent
 
-	eliminate use of old scn routine lu.c,
-	use gsl routines instead.
-	cfg 12.24.14
+	removed gsl dependency
+	7.19.21
 
 */
 
 #include "decs.h"
 
-#include <gsl/gsl_linalg.h>
 
+
+double MINOR(double m[16], int r0, int r1, int r2, int c0, int c1, int c2);
+void adjoint(double m[16], double adjOut[16]);
+double determinant(double m[16]);
 
 /*
   set_geometry():
@@ -26,7 +27,6 @@
           the metric's determinant (gdet).
 
 */
-
 void set_geometry()
 {
 	int i, j ;
@@ -145,79 +145,48 @@ void coord(int i, int j, int loc, double *X)
 
 /* assumes gcov has been set first; returns determinant */
 /* 
-   switched to use gsl
-   cfg 12.24.14 
+	removed gsl dependency
+	7.19.21
 */
 double gdet_func(double gcov[][NDIM])
 {
-	int i,j,signum ;
-	double detg ;
-	gsl_matrix *gsl_gcov ;
-	gsl_permutation *perm ;
-
-	gsl_gcov = gsl_matrix_alloc(NDIM,NDIM) ;
-	perm = gsl_permutation_alloc(NDIM) ;
-
-	for(i=0;i<NDIM;i++)
-	for(j=0;j<NDIM;j++) gsl_matrix_set(gsl_gcov,i,j,gcov[i][j]) ;
-
-	if(gsl_linalg_LU_decomp(gsl_gcov, perm, &signum) != 0) {
+	double det = determinant(&gcov[0][0]);
+	if(det == 0) {
 		fprintf(stderr,
 			"gdet_func(): singular matrix encountered! \n");
 		fail(FAIL_METRIC);
 	}
-
-	detg = gsl_linalg_LU_det(gsl_gcov, signum) ;
-
-	/* clean up after yourself */
-	gsl_matrix_free(gsl_gcov) ;
-	gsl_permutation_free(perm) ;
-
-	return (sqrt(fabs(detg)));
+	return sqrt(fabs(det));
 }
+
 
 /* invert gcov to get gcon */
 /*
 
-	switched to use gsl
-	cfg 12.24.14
+	removed gsl dependency
+	7.19.21
 
 */
+
 void gcon_func(double gcov[][NDIM], double gcon[][NDIM])
 {
-	int i,j,signum ;
-	gsl_matrix *gsl_gcov,*gsl_gcon ;
-	gsl_permutation *perm ;
+  double *m = &gcov[0][0];
+  double *invOut = &gcon[0][0];
+  adjoint(m, invOut);
 
-	gsl_gcov = gsl_matrix_alloc(NDIM,NDIM) ;
-	gsl_gcon = gsl_matrix_alloc(NDIM,NDIM) ;
-	perm = gsl_permutation_alloc(NDIM) ;
-
-	for(i=0;i<NDIM;i++)
-	for(j=0;j<NDIM;j++) gsl_matrix_set(gsl_gcov,i,j,gcov[i][j]) ;
-
-	if(gsl_linalg_LU_decomp(gsl_gcov, perm, &signum) != 0) {
-		fprintf(stderr,
-			"gcon_func(): singular matrix encountered! \n");
-		fail(FAIL_METRIC);
-	}
-
-	if(gsl_linalg_LU_invert(gsl_gcov, perm, gsl_gcon) != 0) {
-		fprintf(stderr,
-			"gcon_func(): problem inverting matrix! \n");
-		fail(FAIL_METRIC);
-	}
-
-	for(i=0;i<NDIM;i++)
-	for(j=0;j<NDIM;j++) gcon[i][j] = gsl_matrix_get(gsl_gcon,i,j) ;
-
-	/* clean up after yourself */
-	gsl_matrix_free(gsl_gcov) ;
-	gsl_matrix_free(gsl_gcon) ;
-	gsl_permutation_free(perm) ;
-
-	/* done! */
+  double det = determinant(m);
+  if(det == 0.) {
+	fprintf(stderr,
+		"gcon_func(): singular matrix encountered! \n");
+	fail(FAIL_METRIC);
+  }
+  double inv_det = 1. / det;
+  for (int i = 0; i < 16; ++i) {
+    invOut[i] = invOut[i]*inv_det;
+  }
 }
+
+
 
 /*
   conn_func():
@@ -341,5 +310,47 @@ struct of_geom *get_geometry(int ii, int jj, int kk)
 	jcurr = jj;
 
 	return( &(ggeom[ii][jj][kk]) ) ;
+}
+
+
+
+
+/* cofactor helper function */
+inline double MINOR(double m[16], int r0, int r1, int r2, int c0, int c1, int c2)
+{
+  return m[4*r0+c0]*(m[4*r1+c1]*m[4*r2+c2] - m[4*r2+c1]*m[4*r1+c2]) -
+         m[4*r0+c1]*(m[4*r1+c0]*m[4*r2+c2] - m[4*r2+c0]*m[4*r1+c2]) +
+         m[4*r0+c2]*(m[4*r1+c0]*m[4*r2+c1] - m[4*r2+c0]*m[4*r1+c1]);
+}
+/* returns determinant of 4 by 4 matrix */
+inline double determinant(double m[16])
+{
+  return m[0]*MINOR(m,1,2,3,1,2,3) -
+         m[1]*MINOR(m,1,2,3,0,2,3) +
+         m[2]*MINOR(m,1,2,3,0,1,3) -
+         m[3]*MINOR(m,1,2,3,0,1,2);
+}
+/* sets adjOut as adjoint of m */
+inline void adjoint(double m[16], double adjOut[16])
+{
+  adjOut[ 0] =  MINOR(m,1,2,3,1,2,3);
+  adjOut[ 1] = -MINOR(m,0,2,3,1,2,3);
+  adjOut[ 2] =  MINOR(m,0,1,3,1,2,3);
+  adjOut[ 3] = -MINOR(m,0,1,2,1,2,3);
+
+  adjOut[ 4] = -MINOR(m,1,2,3,0,2,3);
+  adjOut[ 5] =  MINOR(m,0,2,3,0,2,3);
+  adjOut[ 6] = -MINOR(m,0,1,3,0,2,3);
+  adjOut[ 7] =  MINOR(m,0,1,2,0,2,3);
+
+  adjOut[ 8] =  MINOR(m,1,2,3,0,1,3);
+  adjOut[ 9] = -MINOR(m,0,2,3,0,1,3);
+  adjOut[10] =  MINOR(m,0,1,3,0,1,3);
+  adjOut[11] = -MINOR(m,0,1,2,0,1,3);
+
+  adjOut[12] = -MINOR(m,1,2,3,0,1,2);
+  adjOut[13] =  MINOR(m,0,2,3,0,1,2);
+  adjOut[14] = -MINOR(m,0,1,3,0,1,2);
+  adjOut[15] =  MINOR(m,0,1,2,0,1,2);
 }
 
